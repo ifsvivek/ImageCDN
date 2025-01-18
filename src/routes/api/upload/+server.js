@@ -142,7 +142,6 @@ export async function DELETE({ request }) {
 
         const format = result.rows[0].format;
         const sizes = [256, 512, 1024, 2048];
-        let allDeletedSuccessfully = true;
 
         // Delete files sequentially
         for (const size of sizes) {
@@ -168,20 +167,14 @@ export async function DELETE({ request }) {
                 console.log(`Successfully deleted ${path}`);
             } catch (error) {
                 console.error(`Failed to delete ${path}:`, error);
-                allDeletedSuccessfully = false;
             }
         }
 
-        // Only delete from database if all GitHub deletions were successful
-        if (allDeletedSuccessfully) {
-            await pool.query(
-                'DELETE FROM user_images WHERE user_id = $1 AND foldername = $2',
-                [userId, timestamp]
-            );
-            return json({ success: true });
-        } else {
-            return json({ error: 'Failed to delete some or all images' }, { status: 500 });
-        }
+        await pool.query(
+            'DELETE FROM user_images WHERE user_id = $1 AND foldername = $2',
+            [userId, timestamp]
+        );
+
 
     } catch (error) {
         console.error('Delete error:', error);
