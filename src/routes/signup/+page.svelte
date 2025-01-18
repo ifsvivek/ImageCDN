@@ -20,47 +20,66 @@
 	}
 </script>
 
-<div class="mx-auto max-w-md">
-	<h2 class="mb-4 text-2xl font-bold">Sign Up</h2>
-	<form on:submit|preventDefault={handleSubmit} class="space-y-4">
-		<div>
-			<label for="user_name" class="mb-1 block">Username:</label>
-			<input
-				type="text"
-				id="user_name"
-				bind:value={user_name}
-				required
-				class="w-full rounded border px-3 py-2"
-			/>
+<div class="min-h-screen bg-gray-50">
+	<div class="mx-auto max-w-7xl px-4 py-12">
+		<!-- Header -->
+		<div class="mb-12 text-center">
+			<h1 class="mb-4 text-4xl font-bold tracking-tight text-gray-900">Create Account</h1>
+			<p class="text-lg text-gray-600">Join ImageCDN today</p>
 		</div>
-		<div>
-			<label for="email" class="mb-1 block">Email:</label>
-			<input
-				type="email"
-				id="email"
-				bind:value={email}
-				required
-				class="w-full rounded border px-3 py-2"
-			/>
+
+		<div class="mx-auto max-w-md">
+			<div class="overflow-hidden rounded-2xl bg-white p-8 shadow">
+				<form on:submit|preventDefault={handleSubmit} class="space-y-6">
+					<div>
+						<label for="user_name" class="block text-sm font-medium text-gray-700">Username</label>
+						<input
+							type="text"
+							id="user_name"
+							bind:value={user_name}
+							required
+							class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+						/>
+					</div>
+					<div>
+						<label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+						<input
+							type="email"
+							id="email"
+							bind:value={email}
+							required
+							class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+						/>
+					</div>
+					<div>
+						<label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+						<input
+							type="password"
+							id="password"
+							bind:value={password}
+							required
+							class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+						/>
+					</div>
+					<button
+						type="submit"
+						class="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+					>
+						Sign Up
+					</button>
+				</form>
+
+				{#if error}
+					<div class="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-800" role="alert">
+						{error}
+					</div>
+				{/if}
+
+				<p class="mt-6 text-center text-sm text-gray-600">
+					Already have an account?
+					<a href="/login" class="font-medium text-blue-600 hover:text-blue-500">Login</a>
+				</p>
+			</div>
 		</div>
-		<div>
-			<label for="password" class="mb-1 block">Password:</label>
-			<input
-				type="password"
-				id="password"
-				bind:value={password}
-				required
-				class="w-full rounded border px-3 py-2"
-			/>
-		</div>
-		<button type="submit" class="w-full rounded bg-blue-500 py-2 text-white hover:bg-blue-600">
-			Sign Up
-		</button>
-	</form>
-	{#if error}
-		<p class="mt-4 text-red-500">{error}</p>
-	{/if}
-	<p class="mt-4 text-center">
-		Already have an account? <a href="/login" class="text-blue-500 hover:underline">Login</a>
-	</p>
+	</div>
 </div>

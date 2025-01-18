@@ -7,7 +7,6 @@
 	onMount(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
-			// Parse the JWT token properly
 			try {
 				const payload = JSON.parse(atob(token.split('.')[1]));
 				user.set({
@@ -24,8 +23,7 @@
 	});
 </script>
 
-<Nav />
-
-<main class="container mx-auto mt-8">
+<div class="min-h-screen bg-gray-50">
+	<Nav />
 	<slot />
-</main>
+</div>
