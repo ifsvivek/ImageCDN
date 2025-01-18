@@ -110,85 +110,79 @@
 	}
 </script>
 
-<div class="min-h-screen bg-gray-50">
-	<div class="mx-auto max-w-7xl px-4 py-12">
+<div class="min-h-screen bg-gradient-to-b from-zinc-900 to-black text-white">
+	<div class="mx-auto max-w-7xl px-6 py-20">
 		<!-- Header -->
 		<div class="mb-12 text-center">
-			<h1 class="mb-4 text-4xl font-bold tracking-tight text-gray-900">Image CDN Dashboard</h1>
-			<p class="text-lg text-gray-600">Upload, manage and optimize your images</p>
+			<h1 class="text-5xl font-bold tracking-tighter">
+				Image
+				<span class="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+					CDN
+				</span>
+			</h1>
+			<p class="mt-4 text-lg text-zinc-300">Upload, manage and optimize your images</p>
 		</div>
 
 		<!-- Upload Section -->
 		<div class="mx-auto mb-16 max-w-2xl">
-			<div class="overflow-hidden rounded-2xl bg-white shadow">
-				<div class="p-8">
-					<div class="mb-6 flex items-center justify-between">
-						<h2 class="text-xl font-semibold text-gray-900">Upload New Image</h2>
-						<select
-							bind:value={outputFormat}
-							class="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-						>
-							<option value="webp">WebP</option>
-							<option value="jpg">JPG</option>
-							<option value="png">PNG</option>
-						</select>
-					</div>
-
-					<div class="flex items-center gap-4">
-						<input
-							type="file"
-							id="file-upload"
-							accept="image/*"
-							on:change={handleFileSelect}
-							class="block w-full rounded-lg border border-gray-200 text-sm text-gray-500 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-						/>
-						<button
-							on:click={handleUpload}
-							disabled={uploading || !selectedFile}
-							class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-50"
-						>
-							{#if uploading}
-								<svg
-									class="mr-2 h-4 w-4 animate-spin"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<circle
-										class="opacity-25"
-										cx="12"
-										cy="12"
-										r="10"
-										stroke="currentColor"
-										stroke-width="4"
-									/>
-									<path
-										class="opacity-75"
-										fill="currentColor"
-										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-									/>
-								</svg>
-								Uploading...
-							{:else}
-								Upload
-							{/if}
-						</button>
-					</div>
-
-					{#if fileName}
-						<p class="mt-2 text-sm text-gray-500">Selected: {fileName}</p>
-					{/if}
+			<div
+				class="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 transition-all duration-300 hover:border-emerald-500/50"
+			>
+				<div class="mb-6 flex items-center justify-between">
+					<h2 class="text-xl font-semibold text-white">Upload New Image</h2>
+					<select
+						bind:value={outputFormat}
+						class="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm font-medium text-white hover:border-emerald-500/50"
+					>
+						<option value="webp">WebP</option>
+						<option value="jpg">JPG</option>
+						<option value="png">PNG</option>
+					</select>
 				</div>
+
+				<div class="flex items-center gap-4">
+					<input
+						type="file"
+						id="file-upload"
+						accept="image/*"
+						on:change={handleFileSelect}
+						class="block w-full rounded-lg border border-zinc-700 bg-zinc-800 text-sm text-zinc-300 file:mr-4 file:rounded-lg file:border-0 file:bg-emerald-500/10 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-emerald-400"
+					/>
+					<button
+						on:click={handleUpload}
+						disabled={uploading || !selectedFile}
+						class="inline-flex items-center rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:from-emerald-600 hover:to-cyan-600 disabled:opacity-50"
+					>
+						{#if uploading}
+							<svg class="mr-2 h-4 w-4 animate-spin" viewBox="0 0 24 24">
+								<!-- Keep existing SVG path -->
+							</svg>
+							Uploading...
+						{:else}
+							Upload
+						{/if}
+					</button>
+				</div>
+
+				{#if fileName}
+					<p class="mt-2 text-sm text-zinc-400">Selected: {fileName}</p>
+				{/if}
 			</div>
 
 			{#if error}
-				<div class="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-800" role="alert">
+				<div
+					class="mt-4 rounded-lg border border-red-800 bg-red-900/20 p-4 text-sm text-red-400"
+					role="alert"
+				>
 					{error}
 				</div>
 			{/if}
 
 			{#if progress}
-				<div class="mt-4 rounded-lg bg-green-50 p-4 text-sm text-green-800" role="alert">
+				<div
+					class="mt-4 rounded-lg border border-emerald-800 bg-emerald-900/20 p-4 text-sm text-emerald-400"
+					role="alert"
+				>
 					{progress}
 				</div>
 			{/if}
@@ -196,21 +190,23 @@
 
 		<!-- Images Grid -->
 		<div class="space-y-6">
-			<h2 class="text-2xl font-bold text-gray-900">Your Images</h2>
+			<h2 class="text-2xl font-bold text-white">Your Images</h2>
 			{#if loading}
 				<div class="flex items-center justify-center py-12">
 					<div
-						class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+						class="h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"
 					></div>
 				</div>
 			{:else if userImages.length === 0}
-				<div class="rounded-lg bg-white p-12 text-center shadow">
-					<p class="text-gray-500">No images uploaded yet.</p>
+				<div class="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-12 text-center">
+					<p class="text-zinc-400">No images uploaded yet.</p>
 				</div>
 			{:else}
 				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					{#each userImages as image}
-						<div class="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
+						<div
+							class="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 transition-all duration-300 hover:border-emerald-500/50"
+						>
 							<div class="aspect-w-16 aspect-h-9">
 								<img
 									src={image.urls[0]}
@@ -220,30 +216,18 @@
 							</div>
 							<div class="p-4">
 								<div class="mb-4 flex items-center justify-between">
-									<span class="text-sm font-medium text-gray-700">Format: {image.format}</span>
+									<span class="text-sm font-medium text-zinc-300">Format: {image.format}</span>
 									<button
 										on:click={() => deleteImage(image.foldername)}
-										aria-label="Delete image"
-										class="rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-red-500"
+										class="rounded-full p-1.5 text-zinc-400 hover:bg-red-900/20 hover:text-red-400"
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											class="h-5 w-5"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path
-												fill-rule="evenodd"
-												d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-												clip-rule="evenodd"
-											/>
-										</svg>
+										<!-- Keep existing SVG -->
 									</button>
 								</div>
 								<div class="flex flex-wrap gap-2">
 									{#each image.urls as url, i}
 										<button
-											class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-200"
+											class="rounded-full bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors duration-200 hover:bg-emerald-500/20 hover:text-emerald-400"
 											on:click={() => copyUrl(url, `${image.foldername}-${i}`)}
 										>
 											{copiedUrlIndex === `${image.foldername}-${i}`

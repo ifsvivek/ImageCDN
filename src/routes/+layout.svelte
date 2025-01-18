@@ -23,9 +23,6 @@
 	});
 </script>
 
-<div class="min-h-screen bg-gray-50">
-	<Nav />
-	<div class="container mx-auto px-4 py-8">
-		<slot />
-	</div>
-</div>
+<Nav />
+
+<slot />
