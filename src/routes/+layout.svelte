@@ -25,5 +25,7 @@
 
 <div class="min-h-screen bg-gray-50">
 	<Nav />
-	<slot />
+	<div class="container mx-auto px-4 py-8">
+		<slot />
+	</div>
 </div>
