@@ -24,7 +24,9 @@
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^0.10.4",
+		"@octokit/rest": "^21.1.0",
 		"bcryptjs": "^2.4.3",
-		"jsonwebtoken": "^9.0.2"
+		"jsonwebtoken": "^9.0.2",
+		"sharp": "^0.33.5"
 	}
 }
