@@ -1,0 +1,31 @@
+<script>
+	import { onMount } from 'svelte';
+	import { user } from '$lib/stores/user';
+	import { Nav } from '$components';
+	import '../app.css';
+
+	onMount(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			// Parse the JWT token properly
+			try {
+				const payload = JSON.parse(atob(token.split('.')[1]));
+				user.set({
+					user_id: payload.user_id,
+					user_name: payload.user_name,
+					email: payload.email,
+					token: token
+				});
+			} catch (err) {
+				console.error('Error parsing token:', err);
+				localStorage.removeItem('token');
+			}
+		}
+	});
+</script>
+
+<Nav />
+
+<main class="container mx-auto mt-8">
+	<slot />
+</main>
