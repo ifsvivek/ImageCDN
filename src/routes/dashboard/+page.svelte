@@ -375,6 +375,7 @@
 									</button>
 									<button
 										on:click={() => deleteApiKey(key.api_key)}
+										aria-label="Delete API Key"
 										class="rounded-full p-2 text-zinc-400 hover:bg-red-900/20 hover:text-red-400"
 									>
 										<svg
@@ -409,7 +410,7 @@
 		  formData.append('format', 'webp'); // 'webp', 'jpg', or 'png'
 		  formData.append('apiKey', 'your-api-key');
 		  
-		  const response = await fetch('${window.location.origin}/upload', {
+		  const response = await fetch('https://imagecdn.ifsvivek.tech/upload', {
 			  method: 'POST',
 			  body: formData
 		  });
