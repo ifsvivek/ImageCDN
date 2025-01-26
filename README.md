@@ -74,7 +74,7 @@ JWT_SECRET="your_random_secret_key"
 
 1. Create a new repository named `CDN` in your GitHub account.
 2. Generate a personal access token with `repo` permissions.
-3. Update the following lines in [`src/routes/api/upload/+server.js`](.src/routes/api/upload/+server.js) with your GitHub username:
+3. Update the following lines in [`src/routes/api/upload/+server.js`](./src/routes/api/upload/+server.js) with your GitHub username:
 
    ```js
    await octokit.repos.createOrUpdateFileContents({
