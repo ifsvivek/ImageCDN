@@ -13,11 +13,6 @@
 	let loading = true;
 	let fileName = '';
 	let copiedUrlIndex = null;
-	let apiKeys = [];
-	let loadingKeys = true;
-	let generatingKey = false;
-	let showApiUsage = false;
-	let selectedApiKey = null;
 
 	async function loadUserImages() {
 		try {
@@ -109,59 +104,9 @@
 		}, 2000);
 	}
 
-	async function loadApiKeys() {
-		try {
-			const response = await fetch(`/api/genapi?userId=${$user.user_id}`);
-			const data = await response.json();
-			if (response.ok) {
-				apiKeys = data.apiKeys;
-			}
-		} catch (err) {
-			error = 'Failed to load API keys';
-		} finally {
-			loadingKeys = false;
-		}
-	}
-
-	async function generateApiKey() {
-		generatingKey = true;
-		try {
-			const response = await fetch('/api/genapi', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ user_id: $user.user_id })
-			});
-			const data = await response.json();
-			if (response.ok) {
-				await loadApiKeys();
-			} else {
-				throw new Error(data.error);
-			}
-		} catch (err) {
-			error = err.message;
-		} finally {
-			generatingKey = false;
-		}
-	}
-
-	async function deleteApiKey(apiKey) {
-		if (!confirm('Are you sure you want to delete this API key?')) return;
-		try {
-			const response = await fetch('/api/genapi', {
-				method: 'DELETE',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ user_id: $user.user_id, api_key: apiKey })
-			});
-			if (!response.ok) throw new Error('Failed to delete API key');
-			await loadApiKeys();
-		} catch (err) {
-			error = err.message;
-		}
-	}
-
 	onMount(async () => {
 		if (!$user) goto('/login');
-		await Promise.all([loadUserImages(), loadApiKeys()]);
+		await Promise.all([loadUserImages()]);
 	});
 </script>
 
@@ -326,108 +271,6 @@
 					{/each}
 				</div>
 			{/if}
-		</div>
-		<div class="mt-16 space-y-6">
-			<h2 class="text-2xl font-bold text-white">API Access</h2>
-
-			<!-- API Key Management -->
-			<div class="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8">
-				<div class="mb-6 flex items-center justify-between">
-					<h3 class="text-xl font-semibold text-white">API Keys</h3>
-					<button
-						on:click={generateApiKey}
-						disabled={generatingKey}
-						class="rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-2 text-sm font-medium text-white hover:from-emerald-600 hover:to-cyan-600 disabled:opacity-50"
-					>
-						{generatingKey ? 'Generating...' : 'Generate New Key'}
-					</button>
-				</div>
-
-				<!-- API Keys List -->
-				{#if loadingKeys}
-					<div class="flex justify-center py-8">
-						<div
-							class="h-6 w-6 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"
-						></div>
-					</div>
-				{:else if apiKeys.length === 0}
-					<p class="text-zinc-400">No API keys generated yet.</p>
-				{:else}
-					<div class="space-y-4">
-						{#each apiKeys as key}
-							<div
-								class="flex items-center justify-between rounded-lg border border-zinc-700 bg-zinc-800 p-4"
-							>
-								<div class="flex-1 space-y-1">
-									<div class="font-mono text-sm text-zinc-300">
-										{key.api_key}
-									</div>
-									<div class="text-xs text-zinc-500">
-										Created: {new Date(key.created_at).toLocaleDateString()}
-									</div>
-								</div>
-								<div class="flex gap-2">
-									<button
-										on:click={() => copyUrl(key.api_key, key.api_key)}
-										class="rounded-full p-2 text-zinc-400 hover:bg-emerald-500/20 hover:text-emerald-400"
-									>
-										{copiedUrlIndex === key.api_key ? 'Copied!' : 'Copy'}
-									</button>
-									<button
-										on:click={() => deleteApiKey(key.api_key)}
-										aria-label="Delete API Key"
-										class="rounded-full p-2 text-zinc-400 hover:bg-red-900/20 hover:text-red-400"
-									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="16"
-											height="16"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="2"
-										>
-											<path d="M3 6h18" />
-											<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-										</svg>
-									</button>
-								</div>
-							</div>
-						{/each}
-					</div>
-				{/if}
-
-				<!-- API Documentation -->
-				<div class="mt-8 rounded-lg border border-zinc-700 bg-zinc-800/50 p-6">
-					<h4 class="mb-4 text-lg font-medium text-white">How to Use the API</h4>
-					<div class="space-y-4">
-						<p class="text-sm text-zinc-300">
-							Upload images programmatically using your API key. Here's an example using JavaScript:
-						</p>
-						<pre class="rounded-lg bg-zinc-900 p-4 font-mono text-sm text-zinc-300">
-		  {`const formData = new FormData();
-		  formData.append('image', imageFile);
-		  formData.append('format', 'webp'); // 'webp', 'jpg', or 'png'
-		  formData.append('apiKey', 'your-api-key');
-		  
-		  const response = await fetch('https://imagecdn.ifsvivek.tech/upload', {
-			  method: 'POST',
-			  body: formData
-		  });
-		  
-		  const { url } = await response.json();
-		  console.log('Uploaded image URL:', url);`}</pre>
-						<div class="rounded-lg border border-emerald-800 bg-emerald-900/20 p-4">
-							<h5 class="mb-2 font-medium text-emerald-400">Response Format</h5>
-							<p class="text-sm text-emerald-300">
-								Successful uploads return a JSON object with a <code
-									class="rounded bg-emerald-900/40 px-1">url</code
-								> field containing the CDN URL of your uploaded image.
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
